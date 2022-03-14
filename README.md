@@ -6,7 +6,7 @@ Desde el IES Al-Ándalus nos acaban de comentar que por favor añadamos persiste
 
 El diagrama de clases queda como te muestro a continuación y poco a poco te iré explicando los diferentes pasos a realizar:
 
-![Diagrama de clases para reservasaulas](ReservaAulas-V3/src/main/resources/reservasAulas.png)
+![Diagrama de clases para reservasaulas](src/main/resources/reservasAulas.png)
 
 Por tanto, tu tarea va a consistir en completar los siguientes apartados:
 
