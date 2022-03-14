@@ -12,20 +12,26 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Reserva;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.IAulas;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.IProfesores;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.IReservas;
+import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.memoria.IFuenteDatos;
 
 public class Modelo implements IModelo {
 
 	// DECLARACIÓN DE ATRIBUTOS
-	IProfesores profesores;
-	IAulas aulas;
-	IReservas reservas;
+	private IAulas aulas;
+	private IProfesores profesores;
+	private IReservas reservas;
 
-	// CREAMOS EL CONSTRUCTOR QUE NOS CREA LOS OBJETOS ANTERIORES CON LA CAPACIDAD
-	// REQUERIDA
-	public Modelo() {
-		aulas = FactoriaFuenteDatos.MEMORIA.crear().crearAulas();
-		profesores = FactoriaFuenteDatos.MEMORIA.crear().crearProfesores();
-		reservas = FactoriaFuenteDatos.MEMORIA.crear().crearReservas();
+	// CREAMOS EL CONSTRUCTOR QUE NOS CREA LOS OBJETOS ANTERIORES
+//	public Modelo(IFuenteDatos fuenteDatos) {
+//		aulas=fuenteDatos.crearAulas();
+//		profesores=fuenteDatos.crearProfesores();
+//		reservas=fuenteDatos.crearReservas();
+//	}
+	
+	public Modelo(IFuenteDatos fuenteDatos) {
+		aulas=fuenteDatos.crearAulas();
+		profesores=fuenteDatos.crearProfesores();
+		reservas=fuenteDatos.crearReservas();
 	}
 
 	// CREAMOS MÉTODO GETAULAS Y NUMAULAS
@@ -38,25 +44,18 @@ public class Modelo implements IModelo {
 	}
 
 	// CREAMOS MÉTODO REPRESENTARAULAS
+	@Override
 	public List<String> representarAulas() {
-		List<String> listaAulas = aulas.representar();
-		boolean vacio = true;
-//		for(String s:listaAulas) {
-//			if(s!=null) {
-//				vacio=false;
-//			}
-//		}
-//		if(vacio==true) {
-//			return null;
-//		}
-		Iterator<String> iterador = listaAulas.iterator();
+		List<String> listaAulas=aulas.representar();
+		boolean vacio=true;
+		Iterator<String> iterador=listaAulas.iterator();
 		while (iterador.hasNext()) {
-			String auxiliar = iterador.next();
-			if (auxiliar != null) {
-				vacio = false;
-			}
+			String auxiliar=iterador.next();
+			if(auxiliar!=null) {
+				vacio=false;
+			}		
 		}
-		if (vacio == true) {
+		if(vacio==true) {
 			return null;
 		}
 		return listaAulas;
@@ -228,4 +227,19 @@ public class Modelo implements IModelo {
 	public boolean consultarDisponibilidad(Aula aula, Permanencia permanencia) {
 		return reservas.consultarDisponibilidad(aula, permanencia);
 	}
+	
+	@Override
+	public void comenzar() {
+		aulas.comenzar();
+		profesores.comenzar();
+		reservas.comenzar();
+	}
+	
+	@Override
+	public void terminar() {
+		aulas.terminar();
+		profesores.terminar();
+		reservas.terminar();
+	}
+	
 }

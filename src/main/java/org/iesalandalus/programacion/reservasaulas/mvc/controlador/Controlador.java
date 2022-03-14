@@ -32,11 +32,13 @@ public class Controlador implements IControlador {
 
 	// CREAMOS MÉTODO COMENZAR
 	public void comenzar() {
+		Imodelo.comenzar();
 		Ivista.comenzar();
 	}
 
 	// CREAMOS MÉTODO TERMINAR
 	public void terminar() {
+		Imodelo.terminar();
 		System.exit(0);
 	}
 
@@ -68,7 +70,7 @@ public class Controlador implements IControlador {
 
 	// CREAMOS MÉTODO BUSCARPROFESOR
 	public Profesor buscarProfesor(Profesor profesor) {
-		Profesor profesorBuscado = Imodelo.buscarProfesor(profesor);
+		Profesor profesorBuscado=Imodelo.buscarProfesor(profesor);
 		return profesorBuscado;
 	}
 

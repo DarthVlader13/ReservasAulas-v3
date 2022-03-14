@@ -76,5 +76,9 @@ public interface IModelo {
 
 	// MÉTODO CONSULTARDISPONIBILIDAD
 	boolean consultarDisponibilidad(Aula aula, Permanencia permanencia);
+	
+	public void comenzar();
+	
+	public void terminar();
 
 }

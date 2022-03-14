@@ -1,5 +1,12 @@
-package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.memoria;
+package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.ficheros;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +19,7 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.IAulas;
 public class Aulas implements IAulas {
 
 	// DECLARACIÓN DE ATRIBUTOS
+	private static final String NOMBRE_FICHERO_AULAS="datos/aulas.dat";
 	private List<Aula> coleccionAulas;
 
 	// CONSTRUCTOR VACIO
@@ -103,12 +111,58 @@ public class Aulas implements IAulas {
 		return representacion;
 	}
 
-	
-	public void comenzar() {
+	// CREAMOS MÉTODO LEER Y ESCRIBIR
+		private void leer() {
+			Aula aula=null;
+			File archivoAulas=new File(NOMBRE_FICHERO_AULAS);
+			try {
+				if (!archivoAulas.exists()) {
+					archivoAulas.createNewFile();
+				} else {
+					FileInputStream fileIn = new FileInputStream(archivoAulas);
+					ObjectInputStream dataIS=new ObjectInputStream(fileIn);
+					do {
+						aula=(Aula)dataIS.readObject();
+						if (aula!=null) {
+							insertar(aula);
+						}
+					} while (aula!=null);
+					dataIS.close();
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println("ERROR: No se pudo abrir el fichero de aulas");
+			} catch (IOException e) {
+//				System.out.println("ERROR inesperado de Entrada/Salida en lectura");
+			} catch (ClassNotFoundException e) {
+				System.out.println("ERROR: No se pudo encontrar la clase a leer");
+			} catch (OperationNotSupportedException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 		
+		private void escribir() {
+			File archivoAulas=new File(NOMBRE_FICHERO_AULAS);
+			try {
+				FileOutputStream fileOut=new FileOutputStream(archivoAulas);
+				ObjectOutputStream dataOS=new ObjectOutputStream(fileOut);
+				for(Aula a:coleccionAulas) {
+					dataOS.writeObject(a);
+				}
+				dataOS.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("ERROR: No se pudo encontrar el fichero de aulas");
+			} catch (IOException e) {
+				System.out.println("ERROR inesperado de Entrada/Salida");
+			}
+		}
+	
+	@Override
+	public void comenzar() {
+		leer();
 	}
 	
+	@Override
 	public void terminar() {
-		
+		escribir();
 	}
 }

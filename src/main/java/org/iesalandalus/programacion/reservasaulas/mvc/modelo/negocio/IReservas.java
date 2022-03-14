@@ -57,5 +57,9 @@ public interface IReservas {
 	// Método insertar, que a un Aula dada comprueba si es nullo y si no, recorre coleccionAulas buscando alguna coincidencia. De haberla, nos
 	// retorna una excepción avisándonos del aula duplicada y si no, inserta una copia del Aula pasada como parámetro
 	void insertar(Reserva reserva) throws OperationNotSupportedException;
+	
+	public void comenzar();
+	
+	public void terminar();
 
 }

@@ -1,5 +1,12 @@
-package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.memoria;
+package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.ficheros;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +19,8 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.IProfesore
 public class Profesores implements IProfesores {
 
 	// DECLARACIÓN DE ATRIBUTOS
-	List<Profesor> coleccionProfesores;
+	private static final String NOMBRE_FICHERO_PROFESORES = "datos/profesores.dat";
+	private List<Profesor> coleccionProfesores;
 
 	// CREAMOS MÉTODO GETPROFESORES
 	public List<Profesor> getProfesores() {
@@ -102,13 +110,58 @@ public class Profesores implements IProfesores {
 		return representacion;
 	}
 	
-	@Override
-	public void comenzar() {
-		
+	// CREAMOS MÉTODO LEER Y ESCRIBIR
+	private void leer() {
+		Profesor profesor = null;
+		File archivoProfesores = new File(NOMBRE_FICHERO_PROFESORES);
+		try {
+			if (!archivoProfesores.exists()) {
+				archivoProfesores.createNewFile();
+			} else {
+				FileInputStream fileIn = new FileInputStream(archivoProfesores);
+				ObjectInputStream dataIS = new ObjectInputStream(fileIn);
+				do {
+					profesor = (Profesor) dataIS.readObject();
+					if (profesor != null) {
+						insertar(profesor);
+					}
+				} while (profesor != null);
+				dataIS.close();
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se pudo abrir el fichero de profesores");
+		} catch (IOException e) {
+//				System.out.println("ERROR inesperado de Entrada/Salida en lectura");
+		} catch (ClassNotFoundException e) {
+			System.out.println("ERROR: No se pudo encontrar la clase a leer");
+		} catch (OperationNotSupportedException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void escribir() {
+		File archivoProfesores = new File(NOMBRE_FICHERO_PROFESORES);
+		try {
+			FileOutputStream fileOut = new FileOutputStream(archivoProfesores);
+			ObjectOutputStream dataOS = new ObjectOutputStream(fileOut);
+			for (Profesor p : coleccionProfesores) {
+				dataOS.writeObject(p);
+			}
+			dataOS.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se pudo encontrar el fichero de profesores");
+		} catch (IOException e) {
+			System.out.println("ERROR inesperado de Entrada/Salida");
+		}
 	}
 	
 	@Override
+	public void comenzar() {
+		leer();
+	}
+
+	@Override
 	public void terminar() {
-		
+		escribir();
 	}
 }

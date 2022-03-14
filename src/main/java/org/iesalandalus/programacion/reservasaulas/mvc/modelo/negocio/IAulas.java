@@ -28,6 +28,10 @@ public interface IAulas {
 
 	//Creamos el método representar que creará un ArrayList de tipo String en el que guardaremos los .toString de las aulas para su posterior uso.
 	List<String> representar();
+	
+	public void comenzar();
+	
+	public void terminar();	
 
 }
 

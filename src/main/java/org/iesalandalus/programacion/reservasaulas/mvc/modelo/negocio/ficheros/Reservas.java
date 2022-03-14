@@ -1,5 +1,12 @@
-package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.memoria;
+package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.ficheros;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -22,6 +29,7 @@ public class Reservas implements IReservas {
 
 	// DECLARACIÓN DE ATRIBUTOS
 	private final static float MAX_PUNTOS_PROFESOR_MES = 200;
+	private static final String NOMBRE_FICHERO_RESERVAS="datos/reservas.dat";
 	private List<Reserva> coleccionReservas;
 	
 	//CREAMOS MÉTODO GETRESERVAS
@@ -269,6 +277,50 @@ public class Reservas implements IReservas {
 		return reservaDia;
 	}
 	
+	// CREAMOS MÉTODO LEER Y ESCRIBIR
+	private void leer() {
+		Reserva reserva=null;
+		File archivoReservas=new File(NOMBRE_FICHERO_RESERVAS);
+		try {
+			if (!archivoReservas.exists()) {
+				archivoReservas.createNewFile();
+			} else {
+				FileInputStream fileIn = new FileInputStream(archivoReservas);
+				ObjectInputStream dataIS=new ObjectInputStream(fileIn);
+				do {
+					reserva=(Reserva)dataIS.readObject();
+					if (reserva!=null) {
+						insertar(reserva);
+					}
+				} while (reserva!=null);
+				dataIS.close();
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se pudo abrir el fichero de reservas");
+		} catch (IOException e) {
+//			System.out.println("ERROR inesperado de Entrada/Salida en lectura");
+		} catch (ClassNotFoundException e) {
+			System.out.println("ERROR: No se pudo encontrar la clase a leer");
+		} catch (OperationNotSupportedException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+		
+	private void escribir() {
+		File archivoReservas=new File(NOMBRE_FICHERO_RESERVAS);
+		try {
+			FileOutputStream fileOut=new FileOutputStream(archivoReservas);
+			ObjectOutputStream dataOS=new ObjectOutputStream(fileOut);
+			for(Reserva r:coleccionReservas) {
+				dataOS.writeObject(r);
+			}
+			dataOS.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: No se pudo encontrar el fichero de reservas");
+		} catch (IOException e) {
+			System.out.println("ERROR inesperado de Entrada/Salida");
+		}
+	}
 	
 	@Override
 	public void comenzar() {
