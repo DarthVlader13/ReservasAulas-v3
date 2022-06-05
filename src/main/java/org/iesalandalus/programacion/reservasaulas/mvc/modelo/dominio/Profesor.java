@@ -5,15 +5,14 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Profesor implements Serializable{
-	
+public class Profesor implements Serializable {
+
 	// DECLACIÓN DE ATRIBUTOS
 	private static final String ER_TELEFONO = ("[69][0-9]{8}");
 	private static final String ER_CORREO = "^[A-Za-z0-9+_.-]+@(.+)$";
 	private String nombre;
 	private String correo;
 	private String telefono;
-	
 
 	// GENERAMOS PRIMERO GETTER Y SETTERS NOMBRE
 	/**
@@ -22,7 +21,6 @@ public class Profesor implements Serializable{
 	public String getNombre() {
 		return nombre;
 	}
-
 
 	/**
 	 * @param nombre the nombre to set
@@ -36,16 +34,13 @@ public class Profesor implements Serializable{
 		this.nombre = formateaNombre(nombre);
 	}
 
-
-	
 	// GENERAMOS GETTER Y SETTER CORREO
 	/**
 	 * @return the correo
 	 */
-	private String getCorreo() {
+	public String getCorreo() {
 		return correo;
 	}
-
 
 	/**
 	 * @param correo the correo to set
@@ -68,10 +63,9 @@ public class Profesor implements Serializable{
 	/**
 	 * @return the telefono
 	 */
-	private String getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
-
 
 	/**
 	 * @param telefono the telefono to set
@@ -88,29 +82,28 @@ public class Profesor implements Serializable{
 		}
 		this.telefono = telefono;
 	}
-	
+
 	// CONSTRUCTOR CON DOS PARAMETROS
-		public Profesor(String nombre, String correo) {
-			setNombre(nombre);
-			setCorreo(correo);
-		}
-	
+	public Profesor(String nombre, String correo) {
+		setNombre(nombre);
+		setCorreo(correo);
+	}
+
 	// AHORA PODEMOS GENERAR EL CONSTRUCTOR CON TRES PARAMETROS
-		public Profesor(String nombre, String correo, String telefono) {
-			setNombre(nombre);
-			setCorreo(correo);
-			setTelefono(telefono);
-		}
-		
+	public Profesor(String nombre, String correo, String telefono) {
+		setNombre(nombre);
+		setCorreo(correo);
+		setTelefono(telefono);
+	}
+
 	// GENERAMOS EL CONSTRUCTOR COPIA
-	public Profesor(Profesor otroProfesor) {
-		if (otroProfesor == null) {
+	public Profesor(Profesor p) {
+		if (p == null) {
 			throw new NullPointerException("ERROR: No se puede copiar un profesor nulo.");
-			} else {
-			setNombre(otroProfesor.getNombre());
-			setCorreo(otroProfesor.getCorreo());
-			setTelefono(otroProfesor.getTelefono());
-			}
+		}
+		setNombre(p.getNombre());
+		setCorreo(p.getCorreo());
+		setTelefono(p.getTelefono());
 	}
 
 	// CREAMOS METODO FORMATEARNOMBRE
@@ -127,20 +120,19 @@ public class Profesor implements Serializable{
 		nombre = String.valueOf(cadenaChar);
 		return nombre;
 	}
-	
+
 	// CREAMOS MÉTODO GETPROFESORFICTICIO
 	// Este método devuelve un profesor a partir de un correo del mismo.
 	public static Profesor getProfesorFicticio (String correo) {
-		Profesor profesor=new Profesor("Jose",correo,"640785633");
+		Profesor profesor=new Profesor("Pepe",correo,"600121212");
 		return new Profesor(profesor);
 	}
-	
-	//GENERAMOS MÉTODOS HAASH AND EQUALS
+
+	// GENERAMOS MÉTODOS HAASH AND EQUALS
 	@Override
 	public int hashCode() {
-		return Objects.hash(nombre);
+		return Objects.hash(correo);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -151,12 +143,10 @@ public class Profesor implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Profesor other = (Profesor) obj;
-		return Objects.equals(nombre, other.nombre);
+		return Objects.equals(correo, other.correo);
 	}
 
-
-		
-	//GENERAMOS MÉTODO STRING
+	// GENERAMOS MÉTODO STRING
 	@Override
 	public String toString() {
 		if (telefono != null) {
@@ -164,5 +154,5 @@ public class Profesor implements Serializable{
 		}
 		return "nombre=" + nombre + ", correo=" + correo;
 	}
-	
+
 }

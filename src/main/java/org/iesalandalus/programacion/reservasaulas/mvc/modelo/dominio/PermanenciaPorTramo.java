@@ -16,13 +16,9 @@ public class PermanenciaPorTramo extends Permanencia {
 	}
 
 	// CONSTRUCTOR COPIA
-	public PermanenciaPorTramo(PermanenciaPorTramo otraPermanencia) {
-		super(otraPermanencia);
-		if (otraPermanencia == null) {
-			throw new NullPointerException("ERROR: No se puede copiar una permanencia nula.");
-		} else {
-			setTramo(otraPermanencia.getTramo());
-		}
+	public PermanenciaPorTramo(PermanenciaPorTramo p) {
+		super(p);
+		setTramo(p.getTramo());
 	}
 
 	// GENERAMOS GETTER Y SETTER DE TRAMO
@@ -57,7 +53,6 @@ public class PermanenciaPorTramo extends Permanencia {
 	}
 
 	@Override
-
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -72,7 +67,7 @@ public class PermanenciaPorTramo extends Permanencia {
 	// GENERAMOS MÉTODO TOSTRING
 	@Override
 	public String toString() {
-		return super.toString() + ", tramo=" + tramo + "";
+		return "día=" + getDia().format(FORMATO_DIA) + ", tramo=" + tramo;
 	}
 
 	@Override

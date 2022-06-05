@@ -8,7 +8,7 @@ public abstract class Permanencia implements Serializable{
 
 	// DECLARACIÓN DE VARIABLES Y CONSTANTES.
 	private LocalDate dia;
-	private final static DateTimeFormatter FORMATO_DIA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	protected final static DateTimeFormatter FORMATO_DIA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	// CONSTRUCTOR CON PARAMETROS
 	public Permanencia(LocalDate dia) {
@@ -36,7 +36,7 @@ public abstract class Permanencia implements Serializable{
 	 * @param dia the dia to set
 	 */
 	private void setDia(LocalDate dia) {
-		if (dia == null) {
+		if (dia==null) {
 			throw new NullPointerException("ERROR: El día de una permanencia no puede ser nulo.");
 		}
 		this.dia = dia;

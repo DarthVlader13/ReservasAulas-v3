@@ -1,6 +1,6 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio;
 
-import java.io.Serializable;
+import java.io.Serializable; 
 import java.util.Objects;
 
 public class Aula implements Serializable {
@@ -30,14 +30,13 @@ public class Aula implements Serializable {
 	 * @param nombre the nombre to set
 	 */
 	private void setNombre(String nombre) {
-		if (nombre == null) {
+		if (nombre==null) {
 			throw new NullPointerException("ERROR: El nombre del aula no puede ser nulo.");
-		} else if (nombre.isEmpty()) {
-			throw new IllegalArgumentException("ERROR: El nombre del aula no puede estar vacío.");
-		} else {
-			this.nombre = nombre;
 		}
-
+		else if (nombre.isBlank()) {
+			throw new IllegalArgumentException("ERROR: El nombre del aula no puede estar vacío.");
+		}
+			this.nombre = nombre;
 	}
 
 	/**
@@ -51,15 +50,15 @@ public class Aula implements Serializable {
 	 * @param puestos the puestos to set
 	 */
 	private void setPuestos(int puestos) {
-		if (puestos < MIN_PUESTOS || puestos > MAX_PUESTOS) {
+		if(puestos<MIN_PUESTOS||puestos>MAX_PUESTOS) {
 			throw new IllegalArgumentException("ERROR: El número de puestos no es correcto.");
 		}
 		this.puestos = puestos;
 	}
 
 	// CONSTRUCTOR COPIA
-	public Aula(Aula a) {
-		if (a == null) {
+	public Aula (Aula a) {
+		if (a==null) {
 			throw new NullPointerException("ERROR: No se puede copiar un aula nula.");
 		}
 		setNombre(a.getNombre());
@@ -84,7 +83,7 @@ public class Aula implements Serializable {
 	public int hashCode() {
 		return Objects.hash(nombre);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

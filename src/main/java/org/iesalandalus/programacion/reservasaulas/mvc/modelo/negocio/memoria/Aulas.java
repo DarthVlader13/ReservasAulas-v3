@@ -1,6 +1,8 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.memoria;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class Aulas implements IAulas {
 	}
 
 	// CREAMOS CONSTRUCTOR COPIA
-	public Aulas(Aulas a) {
+	public Aulas(IAulas a) {
 		if (a == null) {
 			throw new NullPointerException("ERROR: No se pueden copiar aulas nulas.");
 		}
@@ -34,7 +36,7 @@ public class Aulas implements IAulas {
 	}
 
 	// CREAMOS MÉTODO SETAULAS
-	private void setAulas(Aulas aulas) {
+	private void setAulas(IAulas aulas) {
 		if (aulas == null) {
 			throw new NullPointerException("ERROR: No se puede copiar un aula nula.");
 		}
@@ -44,6 +46,10 @@ public class Aulas implements IAulas {
 	// CREAMOS MÉTODO COPIAPROFUNDAAULAS
 	private List<Aula> copiaProfundaAulas(List<Aula> listaAulas) {
 		List<Aula> copiaProfunda = new ArrayList<>();
+		
+		Comparator<Aula> comparador=Comparator.comparing(Aula::getNombre);
+		Collections.sort(coleccionAulas, comparador);
+		
 		Iterator<Aula> iterador = listaAulas.iterator();
 		while (iterador.hasNext()) {
 			copiaProfunda.add(new Aula(iterador.next()));
@@ -52,15 +58,18 @@ public class Aulas implements IAulas {
 	}
 
 	// CREAMOS MÉTODO NUMAULAS
+	@Override
 	public int getNumAulas() {
 		return coleccionAulas.size();
 	}
 
 	// CREAMOS MÉTODO INSERTAR
+	@Override
 	public void insertar(Aula aula) throws OperationNotSupportedException {
 		if (aula == null) {
 			throw new NullPointerException("ERROR: No se puede insertar un aula nula.");
-		} else if (buscar(aula) == null) {
+		}
+		else if (buscar(aula) == null) {
 			coleccionAulas.add(new Aula(aula));
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe un aula con ese nombre.");
@@ -68,25 +77,28 @@ public class Aulas implements IAulas {
 	}
 
 	// CREAMOS MÉTODO BUSCAR
+	@Override
 	public Aula buscar(Aula aula) {
 		if (aula == null) {
 			throw new NullPointerException("ERROR: No se puede buscar un aula nula.");
 		}
 		Aula aulaEncontrada = null;
-		int indice = coleccionAulas.indexOf(aula);
-		if (indice == -1) {
-			aulaEncontrada = null;
+		int indice=coleccionAulas.indexOf(aula);
+		if(indice==-1) {
+			aulaEncontrada=null;
 		} else {
-			aulaEncontrada = new Aula(coleccionAulas.get(indice));
+			aulaEncontrada=new Aula(coleccionAulas.get(indice));
 		}
 		return aulaEncontrada;
 	}
 
 	// CREAMOS MÉTODO BORRAR
-	public void borrar(Aula aula) throws OperationNotSupportedException {
-		if (aula == null) {
+	@Override
+	public void borrar (Aula aula) throws OperationNotSupportedException {
+		if(aula==null) {
 			throw new NullPointerException("ERROR: No se puede borrar un aula nula.");
-		} else if (buscar(aula) == null) {
+		}
+		else if(buscar(aula)==null) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún aula con ese nombre.");
 		} else {
 			coleccionAulas.remove(coleccionAulas.indexOf(aula));
@@ -94,9 +106,10 @@ public class Aulas implements IAulas {
 	}
 
 	// CREAMOS MÉTODO REPRESENTAR
+	@Override
 	public List<String> representar() {
-		List<String> representacion = new ArrayList<>();
-		Iterator<Aula> iterador = coleccionAulas.iterator();
+		List<String> representacion=new ArrayList<>();
+		Iterator<Aula> iterador=coleccionAulas.iterator();
 		while (iterador.hasNext()) {
 			representacion.add(iterador.next().toString());
 		}

@@ -10,22 +10,22 @@ public class FactoriaFuenteDatosFicheros implements IFuenteDatos {
 	// CREAMOS CONSTRUCTOR VACIO
 	public FactoriaFuenteDatosFicheros() {
 	}
-	
+
 	@Override
 	public IAulas crearAulas() {
-		IAulas aulas=new Aulas();
+		IAulas aulas = new Aulas();
 		return aulas;
 	}
-	
+
 	@Override
 	public IProfesores crearProfesores() {
-		IProfesores profesores=new Profesores();
+		IProfesores profesores = new Profesores();
 		return profesores;
 	}
-	
+
 	@Override
 	public IReservas crearReservas() {
-		IReservas reservas=new Reservas();
+		IReservas reservas = new Reservas();
 		return reservas;
 	}
 }

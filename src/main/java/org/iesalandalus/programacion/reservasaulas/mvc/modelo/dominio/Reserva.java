@@ -3,7 +3,7 @@ package org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Reserva implements Serializable{
+public class Reserva implements Serializable {
 
 	// DECLARACIÓN DE ATRIBUTOS
 	private Profesor profesor;
@@ -13,7 +13,7 @@ public class Reserva implements Serializable{
 	// GENERAMOS GETTERS AND SETTERS
 
 	/**
-	 * @return the profesor 
+	 * @return the profesor
 	 */
 	public Profesor getProfesor() {
 		return new Profesor(profesor);
@@ -121,7 +121,6 @@ public class Reserva implements Serializable{
 	// GENERAMOS METODO TOSTRING
 	@Override
 	public String toString() {
-		return profesor.toString() + ", " + aula.toString() + ", " + permanencia.toString() + ", "
-				+ String.format("puntos=%.1f", getPuntos());
+		return profesor.toString() + ", " + aula.toString() + ", " + permanencia.toString() + ", " + String.format("puntos=%.1f",getPuntos());
 	}
 }

@@ -17,7 +17,9 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 public class Consola {
 
 	// DECLARACIÓN DE ATRIBUTOS
-	private static final DateTimeFormatter FORMATO_DIA = DateTimeFormatter.ofPattern("dd/MM/yyyy");;
+	private static final DateTimeFormatter FORMATO_DIA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	static Opcion[] opciones = Opcion.values();
+	static Tramo[] tramos = Tramo.values();
 
 	// CREAMOS CONSTRUCTOR CONSOLA (UTILIDAD, NO SE INSTANCIAN OBJETOS).
 	private Consola() {
@@ -26,9 +28,10 @@ public class Consola {
 
 	// CREAMOS MÉTODO MOSTRARMENU
 	public static void mostrarMenu() {
-		mostrarCabecera("¡Hola! Bienvenido al sistema gestor de reservas de aulas. ¡A trabajar!");
-		for (Opcion opcion : Opcion.values()) {
-			System.out.println(opcion);
+		mostrarCabecera(
+				"Bienvenido al sistema de reservas del IES Al-Ándalus. Entra libremente y deja parte de la felicidad que traes contigo.");
+		for (Opcion o : opciones) {
+			System.out.println(o);
 		}
 	}
 
@@ -41,15 +44,9 @@ public class Consola {
 
 	// CREAMOS MÉTODO ELEGIR OPCION
 	public static int elegirOpcion() {
-		System.out.println("");
-		System.out.println("Por favor, elija una de las opciones del menú: ");
-		System.out.println("");
-		int opcionElegida = Entrada.entero();
-		while (opcionElegida < 0 || opcionElegida > Opcion.values().length) {
-			System.out.println("Por favor, elija una opción comprendida entre 0 y 15: ");
-			opcionElegida = Entrada.entero();
-		}
-		return opcionElegida;
+		System.out.println("Por favor, elija una opción del menú");
+		int eleccion = Entrada.entero();
+		return eleccion;
 	}
 
 	// CREAMOS MÉTODO LEERAULA
@@ -67,38 +64,43 @@ public class Consola {
 
 	// CREAMOS MÉTODO LEERPROFESOR
 	public static Profesor leerProfesor() {
-		System.out.println("Introduce el correo del profesor:");
+		String nombreProfesor = leerNombreProfesor();
+		System.out.println("Introduzca el correo del profesor");
 		String correoProfesor = Entrada.cadena();
-		System.out.println("Introduce el teléfono del profesor:");
+		System.out.println("Introduzca el teléfono del profesor");
 		String telefonoProfesor = Entrada.cadena();
-		if (telefonoProfesor == null || telefonoProfesor.isBlank()) {
-			return new Profesor(leerNombreProfesor(), correoProfesor);
-		} else {
-			return new Profesor(leerNombreProfesor(), correoProfesor, telefonoProfesor);
-		}
+		Profesor profesor = new Profesor(nombreProfesor, correoProfesor, telefonoProfesor);
+		return new Profesor(profesor);
 	}
 
 	// CREAMOS MÉTODO LEERNOMBREPROFESOR
 	public static String leerNombreProfesor() {
-		System.out.println("Introduzca el nombre del profesor:");
-		String nombre = Entrada.cadena();
-		return nombre;
+		System.out.println("Introduzca el nombre del profesor");
+		String nombreProfesor = Entrada.cadena();
+		return nombreProfesor;
 	}
 
 	// CREAMOS MÉTODO LEERTRAMO
 	public static Tramo leerTramo() {
-		System.out.println("Eliga un tramo horio (1 para mañana o 2 para tarde): ");
-		int indice = Entrada.entero();
-		switch (indice) {
-		case 1:
-			return Tramo.MANANA;
-
-		case 2:
-			return Tramo.TARDE;
-
-		default:
-			return null;
-		}
+		Tramo tramoFinal = null;
+		boolean problema = false;
+		do {
+			System.out.println("Elija un tramo horario:");
+			System.out.println("1- Mañana");
+			System.out.println("2- Tarde");
+			int tramoElegido = Entrada.entero();
+			if (tramoElegido == 1) {
+				tramoFinal = Tramo.MANANA;
+				problema = false;
+			} else if (tramoElegido == 2) {
+				tramoFinal = Tramo.TARDE;
+				problema = false;
+			} else {
+				System.out.println("ERROR: El tramo introducido no es válido");
+				problema = true;
+			}
+		} while (problema == true);
+		return tramoFinal;
 	}
 
 	// CREAMOS MÉTODO LEERDIA
@@ -116,10 +118,7 @@ public class Consola {
 				System.out.println("ERROR: Formato incorrecto");
 				problema = true;
 			}
-			if (fechaFinal.isBefore(LocalDate.now())) {
-				System.out.println("ERROR: La fecha introducida no puede ser anterior al día presente");
-				problema = true;
-			}
+
 		} while (problema == true);
 		return fechaFinal;
 	}
@@ -128,7 +127,7 @@ public class Consola {
 	public static Profesor leerProfesorFicticio() {
 		System.out.println("Introduzca el correo del profesor");
 		String correoProfesor = Entrada.cadena();
-		Profesor profesor = new Profesor("Andres", correoProfesor, "640785633");
+		Profesor profesor = new Profesor("pepe", correoProfesor, "600121212");
 		return new Profesor(profesor);
 	}
 
@@ -199,7 +198,7 @@ public class Consola {
 
 	// CREAMOS MÉTODO LEERRESERVAFICTICIA
 	public static Reserva leerReservaFicticia() {
-		Profesor profesor = new Profesor("Jose", "josealm@gmail.com", "640785633");
+		Profesor profesor = new Profesor("pepe", "pepe@gmail.com", "600121212");
 		Reserva reservaFinal = new Reserva(profesor, leerAulaFicticia(), leerPermanencia());
 		return new Reserva(reservaFinal);
 	}

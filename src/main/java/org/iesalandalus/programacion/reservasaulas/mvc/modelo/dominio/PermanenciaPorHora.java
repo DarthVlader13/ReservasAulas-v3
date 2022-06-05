@@ -21,17 +21,11 @@ public class PermanenciaPorHora extends Permanencia {
 	}
 
 	// CONSTRUCTOR COPIA
-	public PermanenciaPorHora(PermanenciaPorHora otraPermanencia) {
-		super(otraPermanencia);
-		if (otraPermanencia == null) {
-			throw new NullPointerException ("ERROR: No se puede copiar una permanencia nula.");
-		} else if (otraPermanencia.hora != null && otraPermanencia.hora.isBefore(HORA_INICIO) && otraPermanencia.hora.isAfter(HORA_FIN)) {
-			throw new IllegalArgumentException ("ERROR: La hora de una permanencia no es válida.");	
-		} else {
-			setHora(otraPermanencia.getHora());
-		}
+	public PermanenciaPorHora(PermanenciaPorHora p) {
+		super(p);
+		setHora(p.getHora());
 	}
-
+	
 	// GENERAMOS GETTER Y SETTER DE HORA
 
 	/**
@@ -67,9 +61,7 @@ public class PermanenciaPorHora extends Permanencia {
 		return Objects.hash(getDia(), hora);
 	}
 
-
 	@Override
-
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -84,8 +76,9 @@ public class PermanenciaPorHora extends Permanencia {
 	// GENERAMOS MÉTODO TOSTRING
 	@Override
 	public String toString() {
-		return super.toString() + ", hora=" + hora + "";
+		return "día=" + getDia().format(FORMATO_DIA) + ", hora=" + hora.format(FORMATO_HORA);
 	}
+
 
 	@Override
 	public int compareTo(Permanencia o) {

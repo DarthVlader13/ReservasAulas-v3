@@ -1,6 +1,8 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.memoria;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,15 +14,16 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio.IProfesore
 public class Profesores implements IProfesores {
 
 	// DECLARACIÓN DE ATRIBUTOS
-	List<Profesor> coleccionProfesores;
+	private List<Profesor> coleccionProfesores;
 
 	// CREAMOS MÉTODO GETPROFESORES
+	@Override
 	public List<Profesor> getProfesores() {
 		return copiaProfundaProfesores(coleccionProfesores);
 	}
 
 	// CREAMOS MÉTODO SETPROFESORES
-	private void setProfesores(Profesores profesores) {
+	private void setProfesores(IProfesores profesores) {
 		if (profesores == null) {
 			throw new NullPointerException("ERROR: No se puede copiar un profesor nulo.");
 		}
@@ -33,7 +36,7 @@ public class Profesores implements IProfesores {
 	}
 
 	// CREAMOS CONSTRUCTOR COPIA
-	public Profesores(Profesores p) {
+	public Profesores(IProfesores p) {
 		if (p == null) {
 			throw new NullPointerException("ERROR: No se pueden copiar profesores nulos.");
 		}
@@ -41,6 +44,7 @@ public class Profesores implements IProfesores {
 	}
 
 	// CREAMOS MÉTODO GETNUMPROFESORES
+	@Override
 	public int getNumProfesores() {
 		return coleccionProfesores.size();
 	}
@@ -48,6 +52,10 @@ public class Profesores implements IProfesores {
 	// CREAMOS MÉTODO COPIAPROFUNDAPROFESORES
 	private List<Profesor> copiaProfundaProfesores(List<Profesor> listaProfesores) {
 		List<Profesor> copiaProfunda = new ArrayList<>();
+
+		Comparator<Profesor> comparador = Comparator.comparing(Profesor::getCorreo);
+		Collections.sort(coleccionProfesores, comparador);
+
 		Iterator<Profesor> iterador = listaProfesores.iterator();
 		while (iterador.hasNext()) {
 			copiaProfunda.add(new Profesor(iterador.next()));
@@ -56,17 +64,19 @@ public class Profesores implements IProfesores {
 	}
 
 	// CREAMOS MÉTODO INSERTAR
+	@Override
 	public void insertar(Profesor profesor) throws OperationNotSupportedException {
 		if (profesor == null) {
 			throw new NullPointerException("ERROR: No se puede insertar un profesor nulo.");
 		} else if (buscar(profesor) == null) {
 			coleccionProfesores.add(new Profesor(profesor));
 		} else {
-			throw new OperationNotSupportedException("ERROR: Ya existe un profesor con ese nombre.");
+			throw new OperationNotSupportedException("ERROR: Ya existe un profesor con ese correo.");
 		}
 	}
 
 	// CREAMOS MÉTODO BUSCAR
+	@Override
 	public Profesor buscar(Profesor profesor) {
 		if (profesor == null) {
 			throw new NullPointerException("ERROR: No se puede buscar un profesor nulo.");
@@ -82,17 +92,19 @@ public class Profesores implements IProfesores {
 	}
 
 	// CREAMOS MÉTODO BORRAR
+	@Override
 	public void borrar(Profesor profesor) throws OperationNotSupportedException {
 		if (profesor == null) {
 			throw new NullPointerException("ERROR: No se puede borrar un profesor nulo.");
 		} else if (buscar(profesor) == null) {
-			throw new OperationNotSupportedException("ERROR: No existe ningún profesor con ese nombre.");
+			throw new OperationNotSupportedException("ERROR: No existe ningún profesor con ese correo.");
 		} else {
 			coleccionProfesores.remove(coleccionProfesores.indexOf(profesor));
 		}
 	}
 
 	// CREAMOS MÉTODO REPRESENTAR
+	@Override
 	public List<String> representar() {
 		List<String> representacion = new ArrayList<>();
 		Iterator<Profesor> iterador = coleccionProfesores.iterator();
@@ -101,14 +113,14 @@ public class Profesores implements IProfesores {
 		}
 		return representacion;
 	}
-	
+
 	@Override
 	public void comenzar() {
-		
+
 	}
-	
+
 	@Override
 	public void terminar() {
-		
+
 	}
 }

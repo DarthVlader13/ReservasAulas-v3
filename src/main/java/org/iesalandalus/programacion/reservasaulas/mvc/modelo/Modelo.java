@@ -1,6 +1,6 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.modelo;
 
-import java.util.Iterator;
+import java.util.Iterator; 
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;

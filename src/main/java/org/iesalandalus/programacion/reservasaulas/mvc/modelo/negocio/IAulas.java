@@ -1,6 +1,6 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.modelo.negocio;
 
-import java.util.List;
+import java.util.List; 
 
 import javax.naming.OperationNotSupportedException;
 

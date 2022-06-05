@@ -98,7 +98,7 @@ public enum Opcion {
 	public abstract void ejecutar();
 
 	// CREAMOS MÉTODO SETVISTA
-	public static void setVista(Vista vista) {
+	protected static void setVista(Vista vista) {
 		if (vista == null) {
 			throw new NullPointerException("ERROR: La vista no pueda ser nula.");
 		}
@@ -121,7 +121,6 @@ public enum Opcion {
 	// GENERAMOS MÉTODO TOSTRING
 	@Override
 	public String toString() {
-		return String.format("%d.- %s", ordinal(), getMensaje());
+		return String.format("%d.- %s", ordinal(), mensajeAMostrar);
 	}
-
 }
